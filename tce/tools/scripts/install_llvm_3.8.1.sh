@@ -89,8 +89,8 @@ cd build
 cmake -G "Unix Makefiles" \
     $LLVM_BUILD_MODE\
     -DCMAKE_INSTALL_PREFIX=$TARGET_DIR \
-    -DLLVM_LINK_LLVM_DYLIB=TRUE \
-    -DLLVM_ENABLE_RTTI=TRUE \
+    -DLLVM_LINK_LLVM_DYLIB:BOOL="TRUE" \
+    -DLLVM_ENABLE_RTTI:BOOL="TRUE" \
     .. \
     || eexit "Configuring LLVM/Clang failed."
 make -j4 CXXFLAGS="-std=c++11" REQUIRES_RTTI=1 \

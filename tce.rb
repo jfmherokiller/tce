@@ -3,7 +3,7 @@ class Tce < Formula
   desc 'TTA-based Co-Design Environment'
   homepage 'http://tce.cs.tut.fi/'
   url 'https://github.com/jfmherokiller/tce/archive/master.zip'
-  version '1.18'
+  version '1.19'
   sha256 ''
   depends_on 'boost'
   depends_on 'automake' => :build
@@ -18,17 +18,19 @@ class Tce < Formula
   #depends_on 'wxgtk'
   depends_on 'libtool'
   depends_on 'cmake'
-
+  depends_on 'zlib'
+  depends_on 'libffi'
+  
   def install
-
+     ENV.prepend_create_path 'PATH', "/usr/local/opt/ccache/libexec"
     # ENV.deparallelize  # if your formula fails when building in parallel
 
     # Remove unrecognized options if warned by configure
     system './tce/tools/scripts/install_llvm_3.8.1.sh', "#{prefix}/llvm"
     
     ENV.prepend_create_path 'PATH', "#{prefix}/llvm/bin"
-    ENV.set
     cd 'tce' do
+      system './autogen.sh'
       system './configure', '--disable-debug',
              '--disable-dependency-tracking',
              '--disable-silent-rules',
