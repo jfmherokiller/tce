@@ -27,6 +27,7 @@ fi
 
 ./tools/scripts/install_llvm_$LLVM_VER_BUILD.sh $INSTALLDIR/llvm
 export PATH="$HOME:$INSTALLDIR/llvm/bin:$PATH"
+ln -s $INSTALLDIR/llvm/libLLVM.* $INSTALLDIR/llvm/libLLVM-$LLVM_VER_BUILD.*
 
 
 ln -s $(which ccache) $HOME/clang && ln -s $(which ccache) $HOME/clang++ && export PATH=$HOME:$PATH;
