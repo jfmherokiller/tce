@@ -41,6 +41,8 @@ if [ "$CC"  == "gcc" ]; then
 export CC='gcc-4.8'; export CXX='g++-4.8'
 fi
 ccache -z -M 500M
+#patch configure.ac
+sed -i 's/LLVM_SHARED_LIB_FILE=\/usr\/lib\/x86_64-linux-gnu\/libLLVM-$LLVM_VERSION$LIBRARY_SUFFIX/"$INSTALLDIR"\/llvm\/lib\/libLLVM$LIBRARY_SUFFIX/g' tce/configure.ac
 
 timeout $TIMEOUT ./InstallScript.sh
 RESULT=$?; if [ $RESULT -eq 0 ] || [ $RESULT -eq 142 ]; then true; else false; fi;
