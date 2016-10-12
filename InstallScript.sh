@@ -1,6 +1,13 @@
 #!/bin/bash
 
 export WORKDIR=$PWD
+
+if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+export SHAREDLIBEXT=".so"
+else
+export SHAREDLIBEXT=".dylib"
+fi
+
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 #tcl tk install region
 alias make="make -s"
@@ -27,7 +34,7 @@ fi
 
 ./tools/scripts/install_llvm_$LLVM_VER_BUILD.sh $INSTALLDIR/llvm
 export PATH="$HOME:$INSTALLDIR/llvm/bin:$PATH"
-ln -s $INSTALLDIR/llvm/libLLVM.* $INSTALLDIR/llvm/libLLVM-$LLVM_VER_BUILD.*
+ln -s $INSTALLDIR/llvm/lib/libLLVM$SHAREDLIBEXT $INSTALLDIR/llvm/lib/libLLVM-$LLVM_VER_BUILD$SHAREDLIBEXT
 
 
 ln -s $(which ccache) $HOME/clang && ln -s $(which ccache) $HOME/clang++ && export PATH=$HOME:$PATH;
@@ -38,7 +45,7 @@ export CXX='clang++ -Qunused-arguments -fcolor-diagnostics'
 ./autogen.sh
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$INSTALLDIR/tcl/lib:/usr/lib:/usr/local/lib
+
 ./configure --prefix=$INSTALLDIR --with-tcl=$INSTALLDIR/tcl
 else
 ./configure --prefix=$INSTALLDIR
